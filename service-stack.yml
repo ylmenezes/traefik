@@ -1,0 +1,16 @@
+version: '3'
+services:
+  apache:
+    image: httpd:2.4
+    networks:
+      - traefik_net
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.apache.rule=Host(`domain.com`)"
+        - "traefik.http.routers.apache.entrypoints=websecure"
+        - "traefik.http.routers.apache.tls.certresolver=letsencryptresolver"
+        - "traefik.http.services.apache.loadbalancer.server.port=80"
+networks:
+  traefik_net:
+    external: true
